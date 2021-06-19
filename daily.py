@@ -77,7 +77,57 @@ def Nday(n_days=3):
     print(close)
 
 
+def test(n_days=3):
+    data = {}
+    date = datetime.datetime.now()
+
+    while len(data) < n_days:
+        print('parsing', date)
+        # 使用 crawPrice 爬資料
+        try:
+            # 抓資料
+            data[date.date()] = crawl_price(date)
+            print('success!')
+        except:
+            # 爬不到 往前找一天
+            print('holiday')
+            date -= datetime.timedelta(days=1)
+            time.sleep(10)
+            continue
+
+        # 減一天
+        date -= datetime.timedelta(days=1)
+        time.sleep(10)
+
+    close = pd.DataFrame({k: d['收盤價'] for k, d in data.items()}).transpose()
+    close.index = pd.to_datetime(close.index)
+
+    openPrice = pd.DataFrame({k: d['開盤價']
+                             for k, d in data.items()}).transpose()
+    openPrice.index = pd.to_datetime(openPrice.index)
+
+    high = pd.DataFrame({k: d['最高價'] for k, d in data.items()}).transpose()
+    high.index = pd.to_datetime(high.index)
+
+    low = pd.DataFrame({k: d['最低價'] for k, d in data.items()}).transpose()
+    low.index = pd.to_datetime(low.index)
+
+    volume = pd.DataFrame({k: d['成交股數'] for k, d in data.items()}).transpose()
+    volume.index = pd.to_datetime(volume.index)
+
+    tsmc = {
+        'close': close['2330']['2021'].dropna().astype(float),
+        'open': openPrice['2330']['2021'].dropna().astype(float),
+        'high': high['2330']['2021'].dropna().astype(float),
+        'low': low['2330']['2021'].dropna().astype(float),
+        'volume': volume['2330']['2021'].dropna().astype(float),
+    }
+    print(tsmc['open'])
+    tsmc['open'].plot()
+
+
 if __name__ == "__main__":
-    Nday(3)
+    # Nday(3)
+    test(3)
     # print(remove_html_tags("元大台灣50正2"))
     # crawl_price(datetime.date.fromisoformat("2021-06-18"))
