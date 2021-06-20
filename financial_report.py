@@ -125,6 +125,11 @@ if __name__ == "__main__":
     method1[method1 == True].index
     print(method1[stock_num])
 
+    # 所有平均線符合的資料
+    g = r.copy()
+    # print(g.loc[:, "2330"])
+    print(g.loc[:, method1[method1 == True].index])
+
     # method2 = gg.loc[stock_num].rolling(4, min_periods=2).mean()
     # method2 = (method2 > method2.shift()).iloc[-5:].sum()
     # method2[method2 == 5]
