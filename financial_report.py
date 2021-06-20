@@ -4,6 +4,11 @@ from io import StringIO
 import time
 import os
 import datetime
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.sans-serif"] = [u'Arial Unicode MS']  # 設定中文字型
+plt.rcParams["axes.unicode_minus"] = False
+pd.options.mode.chained_assignment = None  # 取消顯示pandas資料重設警告
 
 
 def monthly_report(year, month):
@@ -105,4 +110,6 @@ if __name__ == "__main__":
     # print(NMons2())
     r = NMons()
     g1 = r["2330"].plot(legend=True)
+    # g1 = ((r["2330"]/r["2330"].shift()-1)*100).plot()
+
     # g1 = r["1101"].plot(legend=True)
