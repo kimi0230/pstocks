@@ -110,6 +110,9 @@ if __name__ == "__main__":
     # print(NMons2())
     r = NMons()
     g1 = r["2330"].plot(legend=True)
+
+    # MoM (Month on Month)："月營收成長(衰退)率" or "營收月增(衰)率"
+    # 計算公式：MoM = (本月的營收金額 / 上個月的營收金額 – 1) * 100%
     # g1 = ((r["2330"]/r["2330"].shift()-1)*100).plot()
 
-    # g1 = r["1101"].plot(legend=True)
+    plt.show()
