@@ -42,6 +42,9 @@ def crawl_price(date):
             dataline[9] = remove_html_tags(dataline[9])
             outputwriter.writerow(dataline)
 
+        # 偽停頓
+        time.sleep(5)
+
     pdstock = pd.read_csv(filepath, encoding='utf-8')  # 以pandas讀取檔案
     pdstock = pdstock.set_index('證券代號')
     pdstock['成交金額'] = pdstock['成交金額'].str.replace(',', '')
@@ -54,33 +57,7 @@ def Nday(n_days=3):
     data = {}
     date = datetime.datetime.now()
 
-    while len(data) < n_days:
-        print('parsing', date)
-        # 使用 crawPrice 爬資料
-        try:
-            # 抓資料
-            data[date.date()] = crawl_price(date)
-            print('success!')
-        except:
-            # 爬不到 往前找一天
-            print('holiday')
-            date -= datetime.timedelta(days=1)
-            time.sleep(10)
-            continue
-
-        # 減一天
-        date -= datetime.timedelta(days=1)
-        time.sleep(10)
-
-    close = pd.DataFrame({k: d['收盤價'] for k, d in data.items()}).transpose()
-    close.index = pd.to_datetime(close.index)
-    print(close)
-
-
-def test(n_days=3):
-    data = {}
-    date = datetime.datetime.now()
-
+    # TODO: 待優化
     while len(data) < n_days:
         print('parsing', date)
         # 使用 crawPrice 爬資料
@@ -127,7 +104,6 @@ def test(n_days=3):
 
 
 if __name__ == "__main__":
-    # Nday(3)
-    test(3)
     # print(remove_html_tags("元大台灣50正2"))
     # crawl_price(datetime.date.fromisoformat("2021-06-18"))
+    Nday(3)
