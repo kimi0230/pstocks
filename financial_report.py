@@ -109,10 +109,24 @@ if __name__ == "__main__":
     # print(monthly_report(2020, 1))
     # print(NMons2())
     r = NMons()
-    g1 = r["2330"].plot(legend=True)
+
+    stock_num = "2330"
+    g1 = r[stock_num].plot(legend=True)
 
     # MoM (Month on Month)："月營收成長(衰退)率" or "營收月增(衰)率"
     # 計算公式：MoM = (本月的營收金額 / 上個月的營收金額 – 1) * 100%
-    # g1 = ((r["2330"]/r["2330"].shift()-1)*100).plot()
+    # g1 = ((r[stock_num]/r[stock_num].shift()-1)*100).plot()
+
+    # gg = r.transpose()
+    # print(gg.loc[stock_num])
+
+    # 平均線
+    method1 = r.iloc[-3:].mean() > r.iloc[-12:].mean()
+    method1[method1 == True].index
+    print(method1[stock_num])
+
+    # method2 = gg.loc[stock_num].rolling(4, min_periods=2).mean()
+    # method2 = (method2 > method2.shift()).iloc[-5:].sum()
+    # method2[method2 == 5]
 
     plt.show()
